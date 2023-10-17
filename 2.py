@@ -208,12 +208,6 @@ while running:
                 move_left(board, (vacuum_location[0], vacuum_location[1]))
             tmp += 1
 
-        # x = input("action:")
-        # if x == "s":
-        #     has_black_circles = [[0 for _ in range(n)] for _ in range(n)]
-        #
-        # print(has_black_circles)
-
     if tmp != n * n - 1 or action != "clean":
         pass
         # print(action)
@@ -229,13 +223,13 @@ while running:
 
             # time.sleep(0.01)
             # restarting game
-            # repetition_number += 1
-            # tmp = 0
-            # vacuum_location = [0, 0]
-            # board[vacuum_location[0]][vacuum_location[1]] = 1
-            # has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
-            # print_performance_var = 0
-            # actions = []
+            repetition_number += 1
+            tmp = 0
+            vacuum_location = [0, 0]
+            board[vacuum_location[0]][vacuum_location[1]] = 1
+            has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
+            print_performance_var = 0
+            actions = []
 
     # print(action)
     time.sleep(0.5)
@@ -244,3 +238,5 @@ while running:
 # Quit Pygame
 pygame.quit()
 sys.exit()
+
+
