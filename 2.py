@@ -6,7 +6,7 @@ import random
 # Initialize Pygame
 pygame.init()
 
-n = 10  # Change n to adjust the grid size
+n = 3  # Change n to adjust the grid size
 
 # Constants
 WIDTH, HEIGHT = n * 50, n*50
@@ -29,22 +29,43 @@ print(has_black_circles)
 
 actions = []
 
-walk_instruction = []
+# walk_instruction = []
 
-tmp = 0
-for i in range(n):
-    for j in range(n):
-        if tmp == 0:
-            walk_instruction.append('right')
-        else:
-            walk_instruction.append('left')
-    walk_instruction.append("down")
-    tmp = 1 - tmp
-
-print(len(walk_instruction))
+# tmp = 0
+# for i in range(n):
+#     for j in range(n - 1):
+#         if tmp == 0:
+#             walk_instruction.append('right')
+#         else:
+#             walk_instruction.append('left')
+#     walk_instruction.append("down")
+#     tmp = 1 - tmp
 
 
-def simple_reflex_agent(board, vacuum_location):
+def zig_zag_walk():
+    walk_instruction = []
+    for i in range(n):
+        if i % 2 == 0:  # Even row (starting from 0)
+            for j in range(n):
+
+                if j < n - 1:
+                    walk_instruction.append("right")
+            if i < n - 1:
+                walk_instruction.append("down")
+        else:  # Odd row
+            for j in range(n - 1, -1, -1):
+
+                if j > 0:
+                    walk_instruction.append("left")
+            if i < n - 1:
+                walk_instruction.append("down")
+
+    print(walk_instruction)
+
+    return walk_instruction
+
+
+def simple_reflex_agent(has_black_circles, vacuum_location):
     if has_black_circles[vacuum_location[0]][vacuum_location[1]] == 1:  # If the room is dirty, clean it
         return "clean"
     else:
@@ -157,6 +178,8 @@ board[vacuum_location[0]][vacuum_location[1]] = 1
 tmp = 0
 print_performance_var = 0
 
+walk_instruction = zig_zag_walk()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -175,7 +198,7 @@ while running:
 
     pygame.display.flip()
 
-    action = simple_reflex_agent(board, vacuum_location)
+    action = simple_reflex_agent(has_black_circles, vacuum_location)
     if action == "clean":
         actions.append("clean")
         has_black_circles[vacuum_location[0]][vacuum_location[1]] = 0
@@ -186,7 +209,7 @@ while running:
         # random.choice(FUNCTION_LIST)(board, (vacuum_location[0], vacuum_location[1]))
         # print(vacuum_location[0], vacuum_location[1])
 
-        if tmp != n * (n + 1) - 2:
+        if tmp != n * n - 1:
             if walk_instruction[tmp] == 'right':
                 move_right(board, (vacuum_location[0], vacuum_location[1]))
             elif walk_instruction[tmp] == 'down':
@@ -200,15 +223,13 @@ while running:
         #     has_black_circles = [[0 for _ in range(n)] for _ in range(n)]
         #
         # print(has_black_circles)
-    if tmp != n * (n + 1) - 2:
+    if tmp != n * n - 1:
         print(action)
-        time.sleep(0.02)
+        time.sleep(0.5)
     else:
         if print_performance_var == 0:
             print(f"performance = {performance_measure(actions, 2, 3)}")
             print_performance_var += 1
-
-print(f"performance = {performance_measure(actions, 2, 3) / n}")
 
 # Quit Pygame
 pygame.quit()
