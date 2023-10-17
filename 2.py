@@ -29,18 +29,6 @@ print(has_black_circles)
 
 actions = []
 
-# walk_instruction = []
-
-# tmp = 0
-# for i in range(n):
-#     for j in range(n - 1):
-#         if tmp == 0:
-#             walk_instruction.append('right')
-#         else:
-#             walk_instruction.append('left')
-#     walk_instruction.append("down")
-#     tmp = 1 - tmp
-
 
 def zig_zag_walk():
     walk_instruction = []
@@ -180,6 +168,8 @@ print_performance_var = 0
 
 walk_instruction = zig_zag_walk()
 
+repetition_number = 100
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -223,13 +213,26 @@ while running:
         #     has_black_circles = [[0 for _ in range(n)] for _ in range(n)]
         #
         # print(has_black_circles)
+
     if tmp != n * n - 1:
+
         print(action)
-        time.sleep(0.5)
+        time.sleep(2)
     else:
         if print_performance_var == 0:
+            print(action)
+            time.sleep(2)
             print(f"performance = {performance_measure(actions, 2, 3)}")
             print_performance_var += 1
+            print(actions)
+
+            # restarting game
+            # repetition_number += 1
+            # tmp = 0
+            # vacuum_location = [0, 0]
+            # board[vacuum_location[0]][vacuum_location[1]] = 1
+            # has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
+
 
 # Quit Pygame
 pygame.quit()
