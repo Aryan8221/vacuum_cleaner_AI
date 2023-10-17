@@ -45,7 +45,7 @@ def run_agent(repetition_number, a, b):
 
 
 if __name__ == '__main__':
-    a = 2
-    b = 3
+    a = 10
+    b = 5
     repetition_number = 100
     run_agent(repetition_number, a, b)

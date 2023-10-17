@@ -215,7 +215,7 @@ while running:
     else:
         if print_performance_var == 0:
             # time.sleep(0.7)
-            print(f"performance = {performance_measure(actions, 2, 3)}")
+            print(f"performance = {performance_measure(actions, 10, 5)}")
             print_performance_var += 1
             print(actions)
 
