@@ -53,6 +53,29 @@ def zig_zag_walk():
     return walk_instruction
 
 
+def opposite_zig_zag_walk(n):
+    walk_instruction = []
+    for i in range(n):
+        if i % 2 == 0:  # Even row (starting from 0)
+            for j in range(n):
+
+                if j < n - 1:
+                    walk_instruction.append("left")
+            if i < n - 1:
+                walk_instruction.append("up")
+        else:  # Odd row
+            for j in range(n - 1, -1, -1):
+
+                if j > 0:
+                    walk_instruction.append("right")
+            if i < n - 1:
+                walk_instruction.append("up")
+
+    print(walk_instruction)
+
+    return walk_instruction
+
+
 def simple_reflex_agent(has_black_circles, vacuum_location):
     if has_black_circles[vacuum_location[0]][vacuum_location[1]] == 1:  # If the room is dirty, clean it
         return "clean"
@@ -169,8 +192,10 @@ print_performance_var = 0
 walk_instruction = zig_zag_walk()
 
 repetition_number = 0
+second_time = False
 
 while running:
+    way = "forward"
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -193,11 +218,7 @@ while running:
         actions.append("clean")
         has_black_circles[vacuum_location[0]][vacuum_location[1]] = 0
     else:
-        # spiral_walk(board)
-        # if vacuum is in the edges the list must be restricted ------------------------------------------
 
-        # random.choice(FUNCTION_LIST)(board, (vacuum_location[0], vacuum_location[1]))
-        # print(vacuum_location[0], vacuum_location[1])
         actions.append("move")
         if tmp != n * n - 1:
             if walk_instruction[tmp] == 'right':
@@ -206,6 +227,8 @@ while running:
                 move_down(board, (vacuum_location[0], vacuum_location[1]))
             elif walk_instruction[tmp] == 'left':
                 move_left(board, (vacuum_location[0], vacuum_location[1]))
+            elif walk_instruction[tmp] == 'up':
+                move_up(board, (vacuum_location[0], vacuum_location[1]))
             tmp += 1
 
     if tmp != n * n - 1 or (tmp == n * n - 1 and action != "move"):
@@ -213,15 +236,31 @@ while running:
 
     elif print_performance_var == 0:
         # time.sleep(0.7)
-        print(f"performance = {performance_measure(actions, 10, 5)}")
-        print_performance_var += 1
-        print(actions)
+        if second_time:
+            print(f"performance = {performance_measure(actions, 10, 5)}")
+            print_performance_var += 1
+            print(actions)
 
-        print("DONE!")
-        break
+            print("DONE!")
+
+        # moving backward
+
+        # choosing 3 random block to put dirt
+        if not second_time:
+            second_time = True
+            for j in range(3):
+                has_black_circles[random.randrange(0, n)][random.randrange(0, n)] = 1
+
+            print(f"second dirty board: {has_black_circles}")
+            walk_instruction = opposite_zig_zag_walk(n)
+            print(f'ins: {walk_instruction}')
+            print(f"vacuum pos: {vacuum_location}")
+            way = 'backward'
+            print_performance_var = 0
+            tmp = 0
 
     # print(action)
-    time.sleep(1)
+    time.sleep(0.5)
 
 
 # Quit Pygame

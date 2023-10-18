@@ -218,10 +218,10 @@ while running:
         print(actions)
 
         print("DONE!")
-        break
+        # break
 
     # print(action)
-    time.sleep(1)
+    time.sleep(0.4)
 
 
 # Quit Pygame
