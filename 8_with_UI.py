@@ -24,19 +24,14 @@ pygame.display.set_caption("WHITE Squares with Vacuum Images")
 # Initialize has_black_circles array to track black circles
 board = [[0 for _ in range(n)] for _ in range(n)]
 has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
+has_black_circles[n - 1][n - 1] = 0
 
-# random_block_pos = [random.randrange(0, n), random.randrange(0, n)]
-random_block_pos = [0, 2]
-block_map = [[0 for _ in range(n)] for _ in range(n)]
-block_map[random_block_pos[0]][random_block_pos[1]] = 1
-print(f"block map: {block_map}")
-
-print(f"dirt map: {has_black_circles}")
+print(has_black_circles)
 
 actions = []
 
 
-def zig_zag_walk():
+def zig_zag_walk(n):
     walk_instruction = []
     for i in range(n):
         if i % 2 == 0:  # Even row (starting from 0)
@@ -59,10 +54,35 @@ def zig_zag_walk():
     return walk_instruction
 
 
+def opposite_zig_zag_walk(n):
+    walk_instruction = []
+    for i in range(n):
+        if i % 2 == 0:  # Even row (starting from 0)
+            for j in range(n):
+
+                if j < n - 1:
+                    walk_instruction.append("left")
+            if i < n - 1:
+                walk_instruction.append("up")
+        else:  # Odd row
+            for j in range(n - 1, -1, -1):
+
+                if j > 0:
+                    walk_instruction.append("right")
+            if i < n - 1:
+                walk_instruction.append("up")
+
+    print(walk_instruction)
+
+    return walk_instruction
+
+
+forward = zig_zag_walk(n)
+backward = opposite_zig_zag_walk(n)
+
+
 def simple_reflex_agent(has_black_circles, vacuum_location):
-    if random_block_pos == vacuum_location:
-        return "block"
-    elif has_black_circles[vacuum_location[0]][vacuum_location[1]] == 1:  # If the room is dirty, clean it
+    if has_black_circles[vacuum_location[0]][vacuum_location[1]] == 1:  # If the room is dirty, clean it
         return "clean"
     else:
         return "move"
@@ -89,7 +109,7 @@ def move_up(array, current_position):
         vacuum_location[0], vacuum_location[1] = row - 1, col
 
         board[vacuum_location[0]][vacuum_location[1]] = 1
-        # actions.append("move")
+        actions.append("move")
         return row - 1, col
     else:
         vacuum_location[0], vacuum_location[1] = current_position
@@ -104,7 +124,7 @@ def move_down(array, current_position):
         vacuum_location[0], vacuum_location[1] = row + 1, col
 
         board[vacuum_location[0]][vacuum_location[1]] = 1
-        # actions.append("move")
+        actions.append("move")
         return row + 1, col
     else:
         vacuum_location[0], vacuum_location[1] = current_position
@@ -119,7 +139,7 @@ def move_left(array, current_position):
         vacuum_location[0], vacuum_location[1] = row, col - 1
 
         board[vacuum_location[0]][vacuum_location[1]] = 1
-        # actions.append("move")
+        actions.append("move")
         return row, col - 1
     else:
         vacuum_location[0], vacuum_location[1] = current_position
@@ -128,13 +148,13 @@ def move_left(array, current_position):
 
 def move_right(array, current_position):
     row, col = current_position
-    if col < n - 1 and (simple_reflex_agent(has_black_circles, ) != 'block'):
+    if col < n - 1:
         array[row][col] = 0  # Clear the current position
         array[row][col + 1] = 1  # Move to the right
         vacuum_location[0], vacuum_location[1] = row, col + 1
 
         board[vacuum_location[0]][vacuum_location[1]] = 1
-        # actions.append("move")
+        actions.append("move")
         return row, col + 1
     else:
         vacuum_location[0], vacuum_location[1] = current_position
@@ -147,16 +167,10 @@ FUNCTION_LIST = [move_up, move_down, move_right, move_left]
 
 
 # Function to draw a square with a vacuum image
-def draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, block_map, row, column):
+def draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, row, column):
     pygame.draw.rect(screen, BLACK, (x, y, square_size, square_size), border_width)
     pygame.draw.rect(screen, WHITE, (
         x + border_width, y + border_width, square_size - 2 * border_width, square_size - 2 * border_width))
-
-    if block_map:
-        block_image = pygame.image.load('Assets/block.png')
-        block_image = pygame.transform.scale(block_image, (square_size, square_size))
-
-        screen.blit(block_image, (x, y))
 
     if has_black_circle:
         stain_image = pygame.image.load('Assets/stain.png')
@@ -171,6 +185,14 @@ def draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, block_map, 
             show_vacuum()
 
 
+def if_all_rooms_are_clean():
+    for row in has_black_circles:
+        for element in row:
+            if element != 0:
+                return False
+    return True
+
+
 # Main loop
 running = True
 
@@ -180,7 +202,7 @@ board[vacuum_location[0]][vacuum_location[1]] = 1
 tmp = 0
 print_performance_var = 0
 
-walk_instruction = zig_zag_walk()
+walk_instruction = forward
 
 repetition_number = 0
 
@@ -198,47 +220,85 @@ while running:
             x = i * square_size
             y = j * square_size
             has_black_circle = has_black_circles[j][i]
-            block = block_map[j][i]
-            draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, block, i, j)
+            draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, i, j)
 
     pygame.display.flip()
 
     action = simple_reflex_agent(has_black_circles, vacuum_location)
-    if action == "block":
-        vacuum_location = [0, 0]
-    elif action == "clean":
+
+    if random.random() <= 0.1:  # 10% mistake in dirt recognition
+        if action == "clean":
+            action = "move"
+        else:
+            action = "clean"
+
+    print(action)
+
+    if action == "clean":
         actions.append("clean")
-        has_black_circles[vacuum_location[0]][vacuum_location[1]] = 0
+        if random.random() <= 0.75:  # 25% of time it doesn't clean
+            has_black_circles[vacuum_location[0]][vacuum_location[1]] = 0
+        else:
+            # print(f"asd {walk_instruction[tmp]}")
+            if walk_instruction[tmp] == 'right':
+                move_right(board, (vacuum_location[0], vacuum_location[1]))
+            elif walk_instruction[tmp] == 'down':
+                move_down(board, (vacuum_location[0], vacuum_location[1]))
+            elif walk_instruction[tmp] == 'up':
+                move_up(board, (vacuum_location[0], vacuum_location[1]))
+            elif walk_instruction[tmp] == 'left':
+                move_left(board, (vacuum_location[0], vacuum_location[1]))
+            tmp += 1
+
     else:
         # spiral_walk(board)
         # if vacuum is in the edges the list must be restricted ------------------------------------------
 
         # random.choice(FUNCTION_LIST)(board, (vacuum_location[0], vacuum_location[1]))
         # print(vacuum_location[0], vacuum_location[1])
-        actions.append("move")
-        if tmp != n * n - 1:
-            if walk_instruction[tmp] == 'right':
-                move_right(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'down':
-                move_down(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'left':
-                move_left(board, (vacuum_location[0], vacuum_location[1]))
-            tmp += 1
+        # actions.append("move")
+        if random.random() <= 0.25:  # 25% of time it doesn't clean
+            has_black_circles[vacuum_location[0]][vacuum_location[1]] = 1
+        else:
+            if tmp != n * n - 1:
+                if walk_instruction[tmp] == 'right':
+                    move_right(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'down':
+                    move_down(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'up':
+                    move_up(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'left':
+                    move_left(board, (vacuum_location[0], vacuum_location[1]))
+                tmp += 1
 
     if tmp != n * n - 1 or (tmp == n * n - 1 and action != "move"):
-        print(f"tmp: {tmp} {action}")
+        pass
+        # print(f"tmp: {tmp} {action}")
 
     elif print_performance_var == 0:
         # time.sleep(0.7)
-        print(f"performance = {performance_measure(actions, 10, 5)}")
-        print_performance_var += 1
-        print(actions)
+        # print(f"tmp: {tmp} {action}")
+        if if_all_rooms_are_clean():
+            print(if_all_rooms_are_clean())
+            print(f"performance = {performance_measure(actions, 10, 5)}")
+            print_performance_var += 1
+            print(actions)
 
-        print("DONE!")
-        # break
+            print("DONE!")
+
+            break
+        else:
+            if walk_instruction == forward:
+                walk_instruction = backward
+                print(walk_instruction)
+            else:
+                walk_instruction = forward
+                print(walk_instruction)
+            tmp = 0
+            print_performance_var = 0
 
     # print(action)
-    time.sleep(1)
+    time.sleep(2)
 
 # Quit Pygame
 pygame.quit()
