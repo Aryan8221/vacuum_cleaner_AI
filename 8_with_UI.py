@@ -6,7 +6,7 @@ import random
 # Initialize Pygame
 pygame.init()
 
-n = 3  # Change n to adjust the grid size
+n = 5  # Change n to adjust the grid size
 
 # Constants
 WIDTH, HEIGHT = n * 50, n * 50
@@ -23,8 +23,10 @@ pygame.display.set_caption("WHITE Squares with Vacuum Images")
 
 # Initialize has_black_circles array to track black circles
 board = [[0 for _ in range(n)] for _ in range(n)]
+
 has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
 has_black_circles[n - 1][n - 1] = 0
+has_black_circles[0][0] = 0
 
 print(has_black_circles)
 
@@ -205,6 +207,7 @@ print_performance_var = 0
 walk_instruction = forward
 
 repetition_number = 0
+performances = 0
 
 while running:
     for event in pygame.event.get():
@@ -257,7 +260,7 @@ while running:
         # random.choice(FUNCTION_LIST)(board, (vacuum_location[0], vacuum_location[1]))
         # print(vacuum_location[0], vacuum_location[1])
         # actions.append("move")
-        if random.random() <= 0.25:  # 25% of time it doesn't clean
+        if random.random() <= 0.25 and vacuum_location != [0, 0]:  # 25% of time it doesn't clean
             has_black_circles[vacuum_location[0]][vacuum_location[1]] = 1
         else:
             if tmp != n * n - 1:
@@ -280,13 +283,29 @@ while running:
         # print(f"tmp: {tmp} {action}")
         if if_all_rooms_are_clean():
             print(if_all_rooms_are_clean())
-            print(f"performance = {performance_measure(actions, 10, 5)}")
+            performance = performance_measure(actions, 10, 5)
+            print(f"performance = {performance}")
             print_performance_var += 1
+            performances += performance
             print(actions)
 
             print("DONE!")
 
-            break
+            repetition_number += 1
+
+            vacuum_location = [0, 0]
+            tmp = 0
+            print_performance_var = 0
+
+            has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
+            has_black_circles[n - 1][n - 1] = 0
+            has_black_circles[0][0] = 0
+            actions = []
+
+            if (repetition_number == 100):
+                print(f"avg performance: {performances / repetition_number}")
+                break
+            # break
         else:
             if walk_instruction == forward:
                 walk_instruction = backward
@@ -298,7 +317,9 @@ while running:
             print_performance_var = 0
 
     # print(action)
-    time.sleep(2)
+
+    # you can adjust speed here
+    # time.sleep(0.0001)
 
 # Quit Pygame
 pygame.quit()
