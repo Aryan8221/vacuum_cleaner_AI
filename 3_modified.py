@@ -288,8 +288,8 @@ while running:
             print(f"avg performance: {performances / repetition_number}")
             break
 
-    # you can adjust speed here
-    time.sleep(0.01)
+    # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
+    time.sleep(1)
 
 # Quit Pygame
 pygame.quit()

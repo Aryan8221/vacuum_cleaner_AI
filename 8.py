@@ -318,8 +318,8 @@ while running:
 
     # print(action)
 
-    # you can adjust speed here
-    time.sleep(0.1)
+    # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
+    time.sleep(1)
 
 # Quit Pygame
 pygame.quit()

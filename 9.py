@@ -228,7 +228,7 @@ while running:
     pygame.display.flip()
 
     action = simple_reflex_agent(has_black_circles, vacuum_location)
-    # print(action)
+    print(action)
 
     if action == "clean":
         actions.append("clean")
@@ -237,15 +237,16 @@ while running:
 
     else:
         if tmp != n * n - 1:
-            if walk_instruction[tmp] == 'right':
-                move_right(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'down':
-                move_down(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'up':
-                move_up(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'left':
-                move_left(board, (vacuum_location[0], vacuum_location[1]))
-            tmp += 1
+            if random.random() <= 0.8:  # the vacuum moves 80% of times
+                if walk_instruction[tmp] == 'right':
+                    move_right(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'down':
+                    move_down(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'up':
+                    move_up(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'left':
+                    move_left(board, (vacuum_location[0], vacuum_location[1]))
+                tmp += 1
 
     if tmp != n * n - 1 or (tmp == n * n - 1 and action != "move"):
         pass
