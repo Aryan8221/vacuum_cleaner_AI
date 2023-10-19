@@ -28,7 +28,7 @@ has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)
 has_black_circles[n - 1][n - 1] = 0
 has_black_circles[0][0] = 0
 
-print(has_black_circles)
+# print(has_black_circles)
 
 actions = []
 
@@ -51,8 +51,8 @@ def zig_zag_walk(n):
             if i < n - 1:
                 walk_instruction.append("down")
 
-    print(walk_instruction)
-
+    # print(walk_instruction)
+    #
     return walk_instruction
 
 
@@ -74,7 +74,7 @@ def opposite_zig_zag_walk(n):
             if i < n - 1:
                 walk_instruction.append("up")
 
-    print(walk_instruction)
+    # print(walk_instruction)
 
     return walk_instruction
 
@@ -228,7 +228,7 @@ while running:
     pygame.display.flip()
 
     action = simple_reflex_agent(has_black_circles, vacuum_location)
-    print(action)
+    # print(action)
 
     if action == "clean":
         actions.append("clean")
@@ -255,14 +255,16 @@ while running:
         # time.sleep(0.7)
         # print(f"tmp: {tmp} {action}")
         if if_all_rooms_are_clean():
-            print(if_all_rooms_are_clean())
+            print(f"time {repetition_number}")
+            # print(if_all_rooms_are_clean())
             performance = performance_measure(actions, 10, 5)
             print(f"performance = {performance}")
             print_performance_var += 1
             performances += performance
             print(actions)
+            print("---------------")
 
-            print("DONE!")
+            # print("DONE!")
 
             repetition_number += 1
 
@@ -282,10 +284,10 @@ while running:
         else:
             if walk_instruction == forward:
                 walk_instruction = backward
-                print(walk_instruction)
+                # print(walk_instruction)
             else:
                 walk_instruction = forward
-                print(walk_instruction)
+                # print(walk_instruction)
             tmp = 0
             print_performance_var = 0
 

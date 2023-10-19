@@ -319,7 +319,7 @@ while running:
     # print(action)
 
     # you can adjust speed here
-    # time.sleep(0.0001)
+    time.sleep(0.1)
 
 # Quit Pygame
 pygame.quit()
