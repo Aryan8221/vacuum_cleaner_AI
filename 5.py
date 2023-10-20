@@ -78,31 +78,7 @@ def zig_zag_walk(n):
     return walk_instruction
 
 
-def opposite_zig_zag_walk(n):
-    walk_instruction = []
-    for i in range(n):
-        if i % 2 == 0:  # Even row (starting from 0)
-            for j in range(n):
-
-                if j < n - 1:
-                    walk_instruction.append("left")
-            if i < n - 1:
-                walk_instruction.append("up")
-        else:  # Odd row
-            for j in range(n - 1, -1, -1):
-
-                if j > 0:
-                    walk_instruction.append("right")
-            if i < n - 1:
-                walk_instruction.append("up")
-
-    # print(walk_instruction)
-
-    return walk_instruction
-
-
 forward = zig_zag_walk(n)
-backward = opposite_zig_zag_walk(n)
 
 
 def simple_reflex_agent(has_black_circles, vacuum_location):

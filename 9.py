@@ -255,47 +255,36 @@ while running:
     elif print_performance_var == 0:
         # time.sleep(0.7)
         # print(f"tmp: {tmp} {action}")
-        if if_all_rooms_are_clean():
-            print(f"time {repetition_number}")
-            # print(if_all_rooms_are_clean())
-            performance = performance_measure(actions, 10, 5)
-            print(f"performance = {performance}")
-            print_performance_var += 1
-            performances += performance
-            print(actions)
-            print("---------------")
+        print(f"time {repetition_number}")
+        # print(if_all_rooms_are_clean())
+        performance = performance_measure(actions, 10, 5)
+        print(f"performance = {performance}")
+        print_performance_var += 1
+        performances += performance
+        print(actions)
+        print("---------------")
 
-            # print("DONE!")
+        # print("DONE!")
 
-            repetition_number += 1
+        repetition_number += 1
 
-            vacuum_location = [0, 0]
-            tmp = 0
-            print_performance_var = 0
+        vacuum_location = [0, 0]
+        tmp = 0
+        print_performance_var = 0
 
-            has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
-            has_black_circles[n - 1][n - 1] = 0
-            has_black_circles[0][0] = 0
-            actions = []
+        has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)]
+        has_black_circles[n - 1][n - 1] = 0
+        has_black_circles[0][0] = 0
+        actions = []
 
-            if (repetition_number == 100):
-                print(f"avg performance: {performances / repetition_number}")
-                break
-            # break
-        else:
-            if walk_instruction == forward:
-                walk_instruction = backward
-                # print(walk_instruction)
-            else:
-                walk_instruction = forward
-                # print(walk_instruction)
-            tmp = 0
-            print_performance_var = 0
+        if (repetition_number == 100):
+            print(f"avg performance: {performances / repetition_number}")
+            break
 
     # print(action)
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    time.sleep(1)
+    time.sleep(.1)
 
 # Quit Pygame
 pygame.quit()

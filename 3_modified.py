@@ -6,7 +6,7 @@ import random
 # Initialize Pygame
 pygame.init()
 
-n = 3  # Change n to adjust the grid size
+n = 10  # Change n to adjust the grid size
 
 # Constants
 WIDTH, HEIGHT = n * 50, n * 50
@@ -63,18 +63,24 @@ def opposite_zig_zag_walk(n):
             for j in range(n):
 
                 if j < n - 1:
-                    walk_instruction.append("left")
+                    if n % 2 == 1:
+                        walk_instruction.append("left")
+                    else:
+                        walk_instruction.append("right")
             if i < n - 1:
                 walk_instruction.append("up")
         else:  # Odd row
             for j in range(n - 1, -1, -1):
 
                 if j > 0:
-                    walk_instruction.append("right")
+                    if n % 2 == 1:
+                        walk_instruction.append("right")
+                    else:
+                        walk_instruction.append("left")
             if i < n - 1:
                 walk_instruction.append("up")
 
-    # print(walk_instruction)
+    print(walk_instruction)
 
     return walk_instruction
 
@@ -289,7 +295,7 @@ while running:
             break
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    time.sleep(1)
+    # time.sleep(.1)
 
 # Quit Pygame
 pygame.quit()
