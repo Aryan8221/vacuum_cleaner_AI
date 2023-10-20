@@ -9,7 +9,7 @@ pygame.init()
 n = 6  # Change n to adjust the grid size
 
 # Constants
-WIDTH, HEIGHT = n * 50, n * 50
+WIDTH, HEIGHT = n * 100, n * 100
 WHITE = (255, 255, 255)  # RGB color for WHITE
 BLACK = (0, 0, 0)  # RGB color for black
 
@@ -50,7 +50,7 @@ for i in random_block_pos:
     block_map[i[0]][i[1]] = 1
     block_number += 1
 
-print(f"block map: {block_map}")
+# print(f"block map: {block_map}")
 
 actions = []
 next_action = "nothing"
@@ -220,14 +220,6 @@ def draw_square_with_vacuum(vacuum_location, x, y, has_black_circle, block_map, 
             show_vacuum()
 
 
-def if_all_rooms_are_clean():
-    for row in has_black_circles:
-        for element in row:
-            if element != 0:
-                return False
-    return True
-
-
 # Main loop
 running = True
 
@@ -265,8 +257,8 @@ while running:
 
     action = simple_reflex_agent(has_black_circles, vacuum_location)
 
-    print(action)
-    print(tmp)
+    # print(action)
+    # print(tmp)
 
     if action == "clean":
         actions.append("clean")
@@ -302,13 +294,8 @@ while running:
                         for i in range(len(insert_list_left)):
                             walk_instruction.insert(i + tmp, insert_list_left[i])
                         pass
-                    # walk_instruction.pop()
-                    # walk_instruction.pop(tmp)
-                    # walk_instruction.pop(tmp)
-                    # for i in range(len(insert_list)):
-                    #     walk_instruction.insert(i + tmp, insert_list[i])
-                    print(walk_instruction)
-                    print(f"number of ins: {len(walk_instruction)}")
+                    # print(walk_instruction)
+                    # print(f"number of ins: {len(walk_instruction)}")
                 elif 0 == row_col[0] and 0 < row_col[1] < n - 1:
                     insert_list = ["down", "right", "right", "up"]
 
@@ -328,9 +315,7 @@ while running:
 
     elif print_performance_var == 0:
         # time.sleep(0.7)
-        # print(f"tmp: {tmp} {action}")
         print(f"time {repetition_number}")
-        # print(if_all_rooms_are_clean())
         performance = performance_measure(actions, 10, 5)
         print(f"performance = {performance}")
         print_performance_var += 1
@@ -351,7 +336,7 @@ while running:
         has_black_circles[0][0] = 0
         random_block_pos = random.choice(random_block_possibility)
         walk_instruction = zig_zag_walk(n)
-        print(f"RESET ins: {walk_instruction}")
+        # print(f"RESET ins: {walk_instruction}")
         block_map = [[0 for _ in range(n)] for _ in range(n)]
         for i in random_block_pos:
             block_map[i[0]][i[1]] = 1
