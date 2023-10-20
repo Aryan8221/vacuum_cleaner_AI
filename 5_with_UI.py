@@ -128,7 +128,7 @@ def move_left(array, current_position):
 
 def move_right(array, current_position):
     row, col = current_position
-    if col < n - 1 and (simple_reflex_agent(has_black_circles, ) != 'block'):
+    if col < n - 1 and (simple_reflex_agent(has_black_circles, vacuum_location) != 'block'):
         array[row][col] = 0  # Clear the current position
         array[row][col + 1] = 1  # Move to the right
         vacuum_location[0], vacuum_location[1] = row, col + 1
