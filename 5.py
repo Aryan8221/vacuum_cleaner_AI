@@ -30,6 +30,8 @@ has_black_circles[0][0] = 0
 
 # print(has_black_circles)
 
+predicted_map = [[False for _ in range(n)] for _ in range(n)]
+
 # random_block_pos = [random.randrange(0, n), random.randrange(0, n)]
 block_number = 0
 random_block_possibility = [
@@ -170,8 +172,6 @@ def move_right(array, current_position):
         return row, col + 1
     else:
         vacuum_location[0], vacuum_location[1] = current_position
-
-        board[vacuum_location[0]][vacuum_location[1]] = 1
         return next_action, [row, col + 1]  # If already at the rightmost position, do nothing and return the same position
 
 
