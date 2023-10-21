@@ -6,7 +6,7 @@ import random
 # Initialize Pygame
 pygame.init()
 
-n = 10  # Change n to adjust the grid size
+n = 5  # Change n to adjust the grid size
 
 # Constants
 WIDTH, HEIGHT = n * 50, n * 50
@@ -295,7 +295,7 @@ while running:
             break
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    # time.sleep(.1)
+    time.sleep(.1)
 
 # Quit Pygame
 pygame.quit()

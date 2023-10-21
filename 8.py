@@ -28,7 +28,7 @@ has_black_circles = [[random.choice([0, 1]) for _ in range(n)] for _ in range(n)
 has_black_circles[n - 1][n - 1] = 0
 has_black_circles[0][0] = 0
 
-print(has_black_circles)
+# print(has_black_circles)
 
 actions = []
 
@@ -51,7 +51,7 @@ def zig_zag_walk(n):
             if i < n - 1:
                 walk_instruction.append("down")
 
-    print(walk_instruction)
+    # print(walk_instruction)
 
     return walk_instruction
 
@@ -74,7 +74,7 @@ def opposite_zig_zag_walk(n):
             if i < n - 1:
                 walk_instruction.append("up")
 
-    print(walk_instruction)
+    # print(walk_instruction)
 
     return walk_instruction
 
@@ -235,23 +235,26 @@ while running:
         else:
             action = "clean"
 
-    print(action)
+    # print(action)
 
+    # print(f"tmp: {tmp}")
+    # print(len(walk_instruction))
     if action == "clean":
         actions.append("clean")
         if random.random() <= 0.75:  # 25% of time it doesn't clean
             has_black_circles[vacuum_location[0]][vacuum_location[1]] = 0
         else:
             # print(f"asd {walk_instruction[tmp]}")
-            if walk_instruction[tmp] == 'right':
-                move_right(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'down':
-                move_down(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'up':
-                move_up(board, (vacuum_location[0], vacuum_location[1]))
-            elif walk_instruction[tmp] == 'left':
-                move_left(board, (vacuum_location[0], vacuum_location[1]))
-            tmp += 1
+            if tmp != n * n - 1:
+                if walk_instruction[tmp] == 'right':
+                    move_right(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'down':
+                    move_down(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'up':
+                    move_up(board, (vacuum_location[0], vacuum_location[1]))
+                elif walk_instruction[tmp] == 'left':
+                    move_left(board, (vacuum_location[0], vacuum_location[1]))
+                tmp += 1
 
     else:
         # spiral_walk(board)
@@ -282,14 +285,15 @@ while running:
         # time.sleep(0.7)
         # print(f"tmp: {tmp} {action}")
         if if_all_rooms_are_clean():
-            print(if_all_rooms_are_clean())
+            print(f"time {repetition_number}")
+            # print(if_all_rooms_are_clean())
             performance = performance_measure(actions, 10, 5)
             print(f"performance = {performance}")
             print_performance_var += 1
             performances += performance
             print(actions)
-
-            print("DONE!")
+            print("---------------")
+            # print("DONE!")
 
             repetition_number += 1
 
@@ -309,17 +313,15 @@ while running:
         else:
             if walk_instruction == forward:
                 walk_instruction = backward
-                print(walk_instruction)
             else:
                 walk_instruction = forward
-                print(walk_instruction)
             tmp = 0
             print_performance_var = 0
 
     # print(action)
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    time.sleep(1)
+    time.sleep(0.1)
 
 # Quit Pygame
 pygame.quit()

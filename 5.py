@@ -34,13 +34,18 @@ has_black_circles[0][0] = 0
 block_number = 0
 random_block_possibility = [
     [[0, 1], [0, 3], [2, 2], [3, 2]],
+    [[0, 1], [0, 3], [3, 2]],
     [[0, 1], [0, 3], [1, 1], [3, 2]],
     [[0, 1], [1, 3], [1, 1], [3, 2]],
+    [[0, 1], [1, 1], [3, 2]],
     [[0, 1], [1, 4], [1, 1], [3, 2]],
     [[0, 1], [1, 4], [3, 1], [3, 3]],
     [[0, 1], [1, 4], [3, 1], [3, 4]],
     [[0, 1], [1, 4], [3, 1], [4, 4]],
     [[0, 1], [1, 4], [3, 1], [4, 1]],
+    [[0, 1], [1, 4], [3, 1]],
+    [[0, 1], [1, 1], [2, 1], [3, 1]],
+    [[0, 1], [1, 1], [3, 1]],
 ]
 random_block_pos = random.choice(random_block_possibility)
 
@@ -327,7 +332,7 @@ while running:
     # print(action)
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    time.sleep(0.1)
+    # time.sleep(0.05)
 
 # Quit Pygame
 pygame.quit()
