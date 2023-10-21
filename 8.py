@@ -9,7 +9,7 @@ pygame.init()
 n = 5  # Change n to adjust the grid size
 
 # Constants
-WIDTH, HEIGHT = n * 50, n * 50
+WIDTH, HEIGHT = n * 100, n * 100
 WHITE = (255, 255, 255)  # RGB color for WHITE
 BLACK = (0, 0, 0)  # RGB color for black
 
@@ -321,7 +321,7 @@ while running:
     # print(action)
 
     # you can adjust speed here (speed up the vacuum to see avg performance in 100 times)
-    time.sleep(0.1)
+    time.sleep(0.5)
 
 # Quit Pygame
 pygame.quit()
